@@ -326,8 +326,12 @@ Application::Application(int& argc, char** argv, timeval &startup_time) :
     LocalVoxelsList::getInstance()->addPersistantTree(DOMAIN_TREE_NAME, _voxels.getTree());
     LocalVoxelsList::getInstance()->addPersistantTree(CLIPBOARD_TREE_NAME, &_clipboard);
     
+    // populate the script options screen here to catch what scripts are going to be loading and record them
+    _scriptOptions = new ScriptOptions();
+
     // do this as late as possible so that all required subsystems are inialized
     loadScripts();
+
 }
 
 Application::~Application() {
@@ -921,9 +925,13 @@ void Application::keyReleaseEvent(QKeyEvent* event) {
         return;
     }
 
-
     if (activeWindow() == _window) {
+        bool isMeta = event->modifiers().testFlag(Qt::ControlModifier);
         switch (event->key()) {
+            case Qt::Key_J:
+                // toggle the script dialog
+                _scriptOptions->setVisible(!_scriptOptions->isVisible());
+                break;
             case Qt::Key_E:
                 _myAvatar->setDriveKeys(UP, 0.f);
                 break;
@@ -3511,7 +3519,8 @@ void Application::loadScript(const QString& fileNameString) {
     bool wantMenuItems = true; // tells the ScriptEngine object to add menu items for itself
 
     ScriptEngine* scriptEngine = new ScriptEngine(script, wantMenuItems, fileName, &_controllerScriptingInterface);
-    
+    _scriptOptions->addRunningScript(scriptEngine, fileNameString);
+
     // add a stop menu item
     Menu::getInstance()->addActionToQMenuAndActionHash(Menu::getInstance()->getActiveScriptsMenu(), 
                             scriptEngine->getScriptMenuName(), 0, scriptEngine, SLOT(stop()));
@@ -3547,6 +3556,7 @@ void Application::loadScript(const QString& fileNameString) {
     connect(workerThread, SIGNAL(finished()), workerThread, SLOT(deleteLater()));
     connect(scriptEngine, SIGNAL(finished(const QString&)), this, SLOT(removeScriptName(const QString&)));
     connect(scriptEngine, SIGNAL(cleanupMenuItem(const QString&)), this, SLOT(cleanupScriptMenuItem(const QString&)));
+    connect(scriptEngine, SIGNAL(finished(const QString&)), _scriptOptions, SLOT(scriptFinished(const QString&)));
 
     // when the application is about to quit, stop our script engine so it unwinds properly
     connect(this, SIGNAL(aboutToQuit()), scriptEngine, SLOT(stop()));

@@ -69,6 +69,7 @@
 #include "ui/LogDialog.h"
 #include "ui/UpdateDialog.h"
 #include "ui/Overlays.h"
+#include "ui/ScriptOptions.h"
 
 
 class QAction;
@@ -482,6 +483,7 @@ private:
     TouchEvent _lastTouchEvent;
     
     Overlays _overlays;
+    ScriptOptions* _scriptOptions;
 };
 
 #endif /* defined(__interface__Application__) */
