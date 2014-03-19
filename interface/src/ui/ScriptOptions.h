@@ -3,6 +3,9 @@
 
 #include <QWidget>
 #include <QSignalMapper>
+#include <QPushButton>
+
+#include <Application.h>
 
 namespace Ui {
 class ScriptOptions;
@@ -15,6 +18,9 @@ class ScriptOptions : public QWidget
 public:
     explicit ScriptOptions(QWidget *parent = 0);
     ~ScriptOptions();
+
+    void loadRunningScripts();
+    void loadRecentScripts();
 
 public slots:
     void killScript(const QString &scriptName);

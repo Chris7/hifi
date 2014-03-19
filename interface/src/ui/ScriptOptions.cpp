@@ -1,8 +1,5 @@
 #include "ScriptOptions.h"
-#include "Application.h"
 #include "ui_scriptOptions.h"
-
-#include <QPushButton>
 
 ScriptOptions::ScriptOptions(QWidget *parent) :
     QWidget(parent),
@@ -20,7 +17,7 @@ ScriptOptions::ScriptOptions(QWidget *parent) :
     loadRunningScripts();
 
     // take care of recently added now
-    loadRecent();
+    loadRecentScripts();
 
 }
 
@@ -35,7 +32,7 @@ void ScriptOptions::loadRunningScripts()
     QStringList activeScripts = app->getActiveScripts();
     for(int i=0;i<activeScripts.size();i++) {
         QHBoxLayout* script_layout = new QHBoxLayout();
-        QLabel* labelText = QLabel(activeScripts[i]);
+        QLabel* labelText = new QLabel(activeScripts[i]);
         QPushButton* labelKill = new QPushButton();
         labelKill->setStyleSheet("border-image: url(:/icons/kill_scripts.svg");
 //        QPixmap pix(":/icons/kill_scripts.svg");
@@ -46,7 +43,7 @@ void ScriptOptions::loadRunningScripts()
         script_layout->addWidget(labelText);
         script_layout->addWidget(labelKill);
         script_layout->setAlignment(labelKill, Qt::AlignRight|Qt::AlignVCenter);
-        script_layout->setAlignment(labelTest, Qt::AlignLeft|Qt::AlignVCenter);
+        script_layout->setAlignment(labelText, Qt::AlignLeft|Qt::AlignVCenter);
         ui->currentlyRunning->addLayout(script_layout);
     }
 }
@@ -56,9 +53,9 @@ void ScriptOptions::loadRecentScripts()
     Application* app = Application::getInstance();
     QStringList recentScripts = app->getRecentScripts();
     for(int i=0;i<recentScripts.size();i++) {
-        QPushButton* labelReload = QPushButton(recentScripts[i]);
+        QPushButton* labelReload = new QPushButton(recentScripts[i]);
         connect(labelReload, SIGNAL(clicked()), reloadScriptMapper, SLOT(map()));
-        reloadScriptMapper->setMapping(labelReload, activeScripts[i]);
+        reloadScriptMapper->setMapping(labelReload, recentScripts[i]);
         ui->recentScripts->addWidget(labelReload);
     }
 }

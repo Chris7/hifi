@@ -14,12 +14,12 @@
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/Application.cpp" line="3565"/>
+        <location filename="src/Application.cpp" line="3568"/>
         <source>Open Script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/Application.cpp" line="3566"/>
+        <location filename="src/Application.cpp" line="3569"/>
         <source>JavaScript Files (*.js)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -28,19 +28,19 @@
     <name>ChatWindow</name>
     <message>
         <location filename="ui/chatWindow.ui" line="20"/>
-        <location filename="../build/interface/ui_chatWindow.h" line="143"/>
+        <location filename="../../hifi-build/interface/ui_chatWindow.h" line="143"/>
         <source>Chat</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/chatWindow.ui" line="50"/>
-        <location filename="../build/interface/ui_chatWindow.h" line="144"/>
+        <location filename="../../hifi-build/interface/ui_chatWindow.h" line="144"/>
         <source>Connecting to XMPP...</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/chatWindow.ui" line="71"/>
-        <location filename="../build/interface/ui_chatWindow.h" line="145"/>
+        <location filename="../../hifi-build/interface/ui_chatWindow.h" line="145"/>
         <source> online now:</source>
         <translation type="unfinished"></translation>
     </message>
@@ -70,7 +70,7 @@
     </message>
     <message numerus="yes">
         <source>second</source>
-        <translation type="vanished">
+        <translation type="obsolete">
             <numerusform>%n second</numerusform>
             <numerusform>%n seconds</numerusform>
         </translation>
@@ -86,26 +86,26 @@
     <message>
         <location filename="ui/updateDialog.ui" line="20"/>
         <location filename="ui/updateDialog.ui" line="73"/>
-        <location filename="../build/interface/ui_updateDialog.h" line="137"/>
-        <location filename="../build/interface/ui_updateDialog.h" line="138"/>
+        <location filename="../../hifi-build/interface/ui_updateDialog.h" line="137"/>
+        <location filename="../../hifi-build/interface/ui_updateDialog.h" line="138"/>
         <source>Update Required</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/updateDialog.ui" line="129"/>
-        <location filename="../build/interface/ui_updateDialog.h" line="140"/>
+        <location filename="../../hifi-build/interface/ui_updateDialog.h" line="140"/>
         <source>Download</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/updateDialog.ui" line="151"/>
-        <location filename="../build/interface/ui_updateDialog.h" line="141"/>
+        <location filename="../../hifi-build/interface/ui_updateDialog.h" line="141"/>
         <source>Skip Version</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
         <location filename="ui/updateDialog.ui" line="173"/>
-        <location filename="../build/interface/ui_updateDialog.h" line="142"/>
+        <location filename="../../hifi-build/interface/ui_updateDialog.h" line="142"/>
         <source>Close</source>
         <translation type="unfinished"></translation>
     </message>
@@ -155,6 +155,33 @@
     <message>
         <location filename="src/ImportDialog.cpp" line="27"/>
         <source>Cancel</source>
+        <translation type="unfinished"></translation>
+    </message>
+</context>
+<context>
+    <name>ScriptOptions</name>
+    <message>
+        <location filename="ui/scriptOptions.ui" line="14"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="112"/>
+        <source>Form</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/scriptOptions.ui" line="39"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="113"/>
+        <source>Running Scripts</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/scriptOptions.ui" line="68"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="115"/>
+        <source>Currently running</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/scriptOptions.ui" line="88"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="116"/>
+        <source>Recently loaded</source>
         <translation type="unfinished"></translation>
     </message>
 </context>
