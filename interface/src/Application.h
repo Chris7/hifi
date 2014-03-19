@@ -179,6 +179,8 @@ public:
     TextureCache* getTextureCache() { return &_textureCache; }
     GlowEffect* getGlowEffect() { return &_glowEffect; }
     ControllerScriptingInterface* getControllerScriptingInterface() { return &_controllerScriptingInterface; }
+    QStringList getActiveScripts() {return _activeScripts;}
+    QStringList getRecentScripts() {return _recentScripts;}
 
     AvatarManager& getAvatarManager() { return _avatarManager; }
     void resetProfile(const QString& username);
@@ -396,6 +398,7 @@ private:
 
     SixenseManager _sixenseManager;
     QStringList _activeScripts;
+    QStringList _recentScripts;
 
     Camera _myCamera;                  // My view onto the world
     Camera _viewFrustumOffsetCamera;   // The camera we use to sometimes show the view frustum from an offset mode

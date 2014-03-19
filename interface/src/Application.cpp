@@ -3473,6 +3473,9 @@ void Application::uploadFST() {
 
 void Application::removeScriptName(const QString& fileNameString) {
     _activeScripts.removeOne(fileNameString);
+    if(!_recentScripts.contains(fileNameString)){
+        _recentScripts.push_front(fileNameString);
+    }
 }
 
 void Application::cleanupScriptMenuItem(const QString& scriptMenuName) {
