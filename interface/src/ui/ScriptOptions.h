@@ -4,7 +4,9 @@
 #include <QWidget>
 #include <QSignalMapper>
 #include <QPushButton>
+#include <QLabel>
 #include <QHBoxLayout>
+#include <QVBoxLayout>
 
 #include "ScriptEngine.h"
 
@@ -12,9 +14,25 @@ namespace Ui {
 class ScriptOptions;
 }
 
-struct ScriptInfo {
+class ScriptWidget : public QWidget
+{
+    Q_OBJECT
+
+public:
+    explicit ScriptWidget(QWidget *parent = 0, QString scriptName = 0, bool running = true);
+    ~ScriptWidget();
+    void inactiveScript();
+    void activeScript();
+
     QString scriptName;
-    QHBoxLayout* layout;
+    bool running;
+    QLabel* scriptLabel;
+    QPushButton* scriptButton;
+    QHBoxLayout* hlay;
+    QVBoxLayout* parentLayout;
+
+signals:
+    void clicked();
 };
 
 class ScriptOptions : public QWidget
@@ -34,16 +52,17 @@ public:
 
 
 public slots:
-    void killScript(const QString &scriptName);
-    void reloadScript(const QString &scriptName);
+    void killScript(int);
     void scriptFinished();
+    void scriptFinished(const QString&);
 
 private:
     Ui::ScriptOptions *ui;
     QSignalMapper* _killScriptMapper;
-    QSignalMapper* _reloadScriptMapper;
     QMap<ScriptEngine*, int > _scriptMapping;
-    QMap<int, ScriptInfo > _scriptInfo;
+    QMap<int, ScriptWidget* > _scriptInfo;
+    QPushButton* _reloadAllButton;
+    QPushButton* _stopAllButton;
 };
 
 #endif // SCRIPTOPTIONS_H

@@ -4,22 +4,22 @@
 <context>
     <name>Application</name>
     <message>
-        <location filename="src/Application.cpp" line="1354"/>
+        <location filename="src/Application.cpp" line="1363"/>
         <source>Export Voxels</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/Application.cpp" line="1355"/>
+        <location filename="src/Application.cpp" line="1364"/>
         <source>Sparse Voxel Octree Files (*.svo)</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/Application.cpp" line="3568"/>
+        <location filename="src/Application.cpp" line="3581"/>
         <source>Open Script</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="src/Application.cpp" line="3569"/>
+        <location filename="src/Application.cpp" line="3582"/>
         <source>JavaScript Files (*.js)</source>
         <translation type="unfinished"></translation>
     </message>
@@ -162,26 +162,44 @@
     <name>ScriptOptions</name>
     <message>
         <location filename="ui/scriptOptions.ui" line="14"/>
-        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="112"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="205"/>
         <source>Form</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/scriptOptions.ui" line="39"/>
-        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="113"/>
+        <location filename="ui/scriptOptions.ui" line="64"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="206"/>
         <source>Running Scripts</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/scriptOptions.ui" line="68"/>
-        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="115"/>
+        <location filename="ui/scriptOptions.ui" line="128"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="208"/>
         <source>Currently running</source>
         <translation type="unfinished"></translation>
     </message>
     <message>
-        <location filename="ui/scriptOptions.ui" line="88"/>
-        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="116"/>
+        <location filename="ui/scriptOptions.ui" line="160"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="209"/>
+        <source>Reload all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/scriptOptions.ui" line="187"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="210"/>
+        <source>Stop all</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/scriptOptions.ui" line="226"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="211"/>
         <source>Recently loaded</source>
+        <translation type="unfinished"></translation>
+    </message>
+    <message>
+        <location filename="ui/scriptOptions.ui" line="246"/>
+        <location filename="../../hifi-build/interface/ui_scriptOptions.h" line="212"/>
+        <source>(click a script or use the 1-9 keys to load and run it)</source>
         <translation type="unfinished"></translation>
     </message>
 </context>

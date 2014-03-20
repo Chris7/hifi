@@ -485,6 +485,7 @@ void Application::initializeGL() {
 }
 
 void Application::paintGL() {
+    return;
     PerformanceWarning::setSuppressShortTimings(Menu::getInstance()->isOptionChecked(MenuOption::SuppressShortTimings));
     bool showWarnings = Menu::getInstance()->isOptionChecked(MenuOption::PipelineWarnings);
     PerformanceWarning warn(showWarnings, "Application::paintGL()");
@@ -3525,6 +3526,8 @@ void Application::loadScript(const QString& fileNameString) {
     Menu::getInstance()->addActionToQMenuAndActionHash(Menu::getInstance()->getActiveScriptsMenu(), 
                             scriptEngine->getScriptMenuName(), 0, scriptEngine, SLOT(stop()));
 
+    //connect the scriptengine stop to our script options
+    connect(scriptEngine, SIGNAL(stopped()), _scriptOptions, SLOT(scriptFinished()));
     // setup the packet senders and jurisdiction listeners of the script engine's scripting interfaces so
     // we can use the same ones from the application.
     scriptEngine->getVoxelsScriptingInterface()->setPacketSender(&_voxelEditSender);
