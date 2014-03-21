@@ -137,7 +137,7 @@
       </widget>
      </item>
      <item>
-      <layout class="QVBoxLayout" name="currentlyRunning" stretch=""/>
+      <layout class="QVBoxLayout" name="currentlyRunning"/>
      </item>
      <item>
       <layout class="QHBoxLayout" name="horizontalLayout_2">

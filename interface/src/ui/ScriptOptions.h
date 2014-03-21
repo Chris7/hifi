@@ -6,7 +6,6 @@
 #include <QPushButton>
 #include <QLabel>
 #include <QHBoxLayout>
-#include <QVBoxLayout>
 
 #include "ScriptEngine.h"
 
@@ -19,20 +18,24 @@ class ScriptWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit ScriptWidget(QWidget *parent = 0, QString scriptName = 0, bool running = true);
+    explicit ScriptWidget(QWidget *parent = 0, QString scriptName = 0);
     ~ScriptWidget();
     void inactiveScript();
     void activeScript();
 
     QString scriptName;
-    bool running;
     QLabel* scriptLabel;
     QPushButton* scriptButton;
     QHBoxLayout* hlay;
-    QVBoxLayout* parentLayout;
+    QList<ScriptEngine*> engines;
+
+    void cleanupEngines();
 
 signals:
     void clicked();
+
+public slots:
+    void buttonClicked();
 };
 
 class ScriptOptions : public QWidget
@@ -43,26 +46,31 @@ public:
     explicit ScriptOptions(QWidget *parent = 0);
     ~ScriptOptions();
 
-    void clearAllScripts();
     void loadRunningScripts();
     void loadRecentScripts();
-    void clearLayout(QLayout*, bool);
     void addRunningScript(ScriptEngine* engine, QString scriptName);
     void removeRunningScript(int scriptID);
+    void removeRunningScript(ScriptEngine* engine);
 
 
 public slots:
-    void killScript(int);
+//    void killScript(int);
     void scriptFinished();
     void scriptFinished(const QString&);
+    void recentScriptClicked();
 
 private:
     Ui::ScriptOptions *ui;
-    QSignalMapper* _killScriptMapper;
+//    QSignalMapper* _killScriptMapper;
+    int _scriptIndex = 0;
+    QMap<QString, ScriptWidget*> _widgets;
+    QMap<QString, QPushButton*> _pastScripts;
+    QList<QPushButton*> _pastScriptsList;
     QMap<ScriptEngine*, int > _scriptMapping;
     QMap<int, ScriptWidget* > _scriptInfo;
     QPushButton* _reloadAllButton;
     QPushButton* _stopAllButton;
+    QSet<int> stopped;
 };
 
 #endif // SCRIPTOPTIONS_H
