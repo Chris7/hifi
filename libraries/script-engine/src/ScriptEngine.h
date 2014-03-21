@@ -53,6 +53,7 @@ public:
     
     Q_INVOKABLE void setIsAvatar(bool isAvatar);
     bool isAvatar() const { return _isAvatar; }
+    bool isFinished() { return _isFinished; }
     
     void setAvatarData(AvatarData* avatarData, const QString& objectName);
     

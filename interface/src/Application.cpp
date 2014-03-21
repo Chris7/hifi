@@ -3526,8 +3526,6 @@ void Application::loadScript(const QString& fileNameString) {
     Menu::getInstance()->addActionToQMenuAndActionHash(Menu::getInstance()->getActiveScriptsMenu(), 
                             scriptEngine->getScriptMenuName(), 0, scriptEngine, SLOT(stop()));
 
-    //connect the scriptengine stop to our script options
-    connect(scriptEngine, SIGNAL(stopped()), _scriptOptions, SLOT(scriptFinished()));
     // setup the packet senders and jurisdiction listeners of the script engine's scripting interfaces so
     // we can use the same ones from the application.
     scriptEngine->getVoxelsScriptingInterface()->setPacketSender(&_voxelEditSender);
@@ -3560,7 +3558,6 @@ void Application::loadScript(const QString& fileNameString) {
     connect(scriptEngine, SIGNAL(finished(const QString&)), this, SLOT(removeScriptName(const QString&)));
     connect(scriptEngine, SIGNAL(cleanupMenuItem(const QString&)), this, SLOT(cleanupScriptMenuItem(const QString&)));
     connect(scriptEngine, SIGNAL(finished(const QString&)), _scriptOptions, SLOT(scriptFinished(const QString&)));
-    connect(scriptEngine, SIGNAL(cleanupMenuItem(const QString&)), _scriptOptions, SLOT(scriptFinished(const QString&)));
 
     // when the application is about to quit, stop our script engine so it unwinds properly
     connect(this, SIGNAL(aboutToQuit()), scriptEngine, SLOT(stop()));

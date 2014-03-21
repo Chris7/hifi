@@ -2,10 +2,10 @@
 #define SCRIPTOPTIONS_H
 
 #include <QWidget>
-#include <QSignalMapper>
 #include <QPushButton>
 #include <QLabel>
 #include <QHBoxLayout>
+#include <QKeyEvent>
 
 #include "ScriptEngine.h"
 
@@ -49,19 +49,17 @@ public:
     void loadRunningScripts();
     void loadRecentScripts();
     void addRunningScript(ScriptEngine* engine, QString scriptName);
-    void removeRunningScript(int scriptID);
-    void removeRunningScript(ScriptEngine* engine);
-
+    void runRecent(int scriptIndex);
+    void keyReleaseEvent(QKeyEvent*);
 
 public slots:
-//    void killScript(int);
-    void scriptFinished();
     void scriptFinished(const QString&);
     void recentScriptClicked();
+    void killAll();
+    void reloadAll();
 
 private:
     Ui::ScriptOptions *ui;
-//    QSignalMapper* _killScriptMapper;
     int _scriptIndex = 0;
     QMap<QString, ScriptWidget*> _widgets;
     QMap<QString, QPushButton*> _pastScripts;

@@ -42,6 +42,8 @@ void ScriptWidget::cleanupEngines()
     for(int i=engines.size()-1;i>=0;i--){
         if(engines[i] == NULL)
             engines.removeAt(i);
+        else if (engines[i]->isFinished())
+            engines.removeAt(i);
     }
     scriptLabel->setText(scriptName+" ("+QString::number(engines.size())+")");
 }
@@ -49,7 +51,6 @@ void ScriptWidget::cleanupEngines()
 void ScriptWidget::buttonClicked()
 {
     // kill one by destroying the last added script
-    qDebug()<<engines.size()<<"engines left";
     if(!engines.size()){
         scriptLabel->setText(scriptName+" ("+QString::number(engines.size())+")");
         this->deleteLater();
@@ -85,11 +86,81 @@ ScriptOptions::ScriptOptions(QWidget *parent) :
     ui->scriptOptionsClose->setFixedSize(pix.rect().size());
     ui->headerLayout->setAlignment(ui->scriptOptionsClose, Qt::AlignRight|Qt::AlignVCenter);
     ui->headerLayout->setAlignment(ui->runningScriptsLabel, Qt::AlignLeft|Qt::AlignVCenter);
+    connect(ui->stopAllButton, SIGNAL(clicked()), this, SLOT(killAll()));
+    connect(ui->reloadAllButton, SIGNAL(clicked()), this, SLOT(reloadAll()));
 }
 
 ScriptOptions::~ScriptOptions()
 {
     delete ui;
+}
+
+void ScriptOptions::killAll(){
+    Application::getInstance()->stopAllScripts();
+    // clear all running
+    QMapIterator<QString, ScriptWidget*> it(_widgets);
+    while(it.hasNext()){
+        it.next();
+        it.value()->deleteLater();
+    }
+    _widgets.clear();
+}
+
+void ScriptOptions::reloadAll(){
+    Application::getInstance()->reloadAllScripts();
+}
+
+void ScriptOptions::keyReleaseEvent(QKeyEvent *event){
+    bool isMeta = event->modifiers().testFlag(Qt::ControlModifier);
+    if(isMeta){
+        switch (event->key()) {
+            case Qt::Key_J:
+                setVisible(false);
+                break;
+            default:
+                break;
+        }
+    }
+    else{
+        switch (event->key()) {
+            case Qt::Key_1:
+                runRecent(1);
+                break;
+            case Qt::Key_2:
+                runRecent(2);
+                break;
+            case Qt::Key_3:
+                runRecent(3);
+                break;
+            case Qt::Key_4:
+                runRecent(4);
+                break;
+            case Qt::Key_5:
+                runRecent(5);
+                break;
+            case Qt::Key_6:
+                runRecent(6);
+                break;
+            case Qt::Key_7:
+                runRecent(7);
+                break;
+            case Qt::Key_8:
+                runRecent(8);
+                break;
+            case Qt::Key_9:
+                runRecent(9);
+                break;
+            default:
+                break;
+        }
+    }
+}
+
+void ScriptOptions::runRecent(int scriptIndex)
+{
+    qDebug()<<"running"<<scriptIndex<<_pastScriptsList;
+    if(scriptIndex <= _pastScriptsList.size())
+        Application::getInstance()->loadScript(_pastScriptsList[scriptIndex-1]->property("Script").toString());
 }
 
 void ScriptOptions::addRunningScript(ScriptEngine* engine, QString scriptName)
@@ -102,6 +173,7 @@ void ScriptOptions::addRunningScript(ScriptEngine* engine, QString scriptName)
     else{
         script = new ScriptWidget(this, scriptName);
         _widgets[scriptName] = script;
+        qDebug()<<scriptName<<"added";
         ui->currentlyRunning->addWidget(script, 1, Qt::AlignLeft);
     }
     script->engines.append(engine);
@@ -135,74 +207,17 @@ void ScriptOptions::addRunningScript(ScriptEngine* engine, QString scriptName)
     }
 }
 
-void ScriptOptions::scriptFinished()
-{
-    // This method can ONLY be called by a signal/slot, otherwise
-    // sender() will be NULL. This method may never be called
-    // because the scriptengine is likely to not exist at this point.
-    QObject* engine = QObject::sender();
-    if (engine == NULL)
-        return;
-    ScriptEngine* scriptEngine = qobject_cast<ScriptEngine*>(engine);
-    removeRunningScript(scriptEngine);
-}
-
 void ScriptOptions::scriptFinished(const QString& scriptFileName)
 {
-    // This method can ONLY be called by a signal/slot, otherwise
-    // sender() will be NULL
-    QObject* engine = QObject::sender();
-    if (engine == NULL){
-        // Script finished and engine is destroyed, we can fetch its widget with the filename
-        if(_widgets.contains(scriptFileName)){
-            ScriptWidget* scriptWidget = _widgets[scriptFileName];
-            scriptWidget->cleanupEngines();
-            if(!scriptWidget->engines.size()){
-                ui->currentlyRunning->removeWidget(scriptWidget);
-                scriptWidget->deleteLater();
-                _widgets.remove(scriptFileName);
-            }
+    qDebug()<<scriptFileName<<"send finished"<<_widgets.contains(scriptFileName);
+    if(_widgets.contains(scriptFileName)){
+        ScriptWidget* scriptWidget = _widgets[scriptFileName];
+        scriptWidget->cleanupEngines();
+        if(!scriptWidget->engines.size()){
+            ui->currentlyRunning->removeWidget(scriptWidget);
+            scriptWidget->deleteLater();
+            _widgets.remove(scriptFileName);
         }
-    }
-    else{
-        ScriptEngine* scriptEngine = qobject_cast<ScriptEngine*>(engine);
-        removeRunningScript(scriptEngine);
-    }
-}
-
-void ScriptOptions::removeRunningScript(int scriptID)
-{
-    if (!_scriptInfo.contains(scriptID))
-        return;
-    if (stopped.contains(scriptID))
-        return;
-    stopped.insert(scriptID);
-    ScriptWidget* scriptWidget = _scriptInfo[scriptID];
-    scriptWidget->inactiveScript();
-    if(!scriptWidget->engines.size()){
-        ui->currentlyRunning->removeWidget(scriptWidget);
-        QString scriptName = scriptWidget->scriptName;
-        scriptWidget->deleteLater();
-        _widgets.remove(scriptName);
-    }
-}
-
-void ScriptOptions::removeRunningScript(ScriptEngine* engine)
-{
-    if (!_scriptMapping.contains(engine))
-        return;
-    int scriptID = _scriptMapping[engine];
-    if (stopped.contains(scriptID))
-        return;
-    stopped.insert(scriptID);
-    ScriptWidget* scriptWidget = _scriptInfo[scriptID];
-    scriptWidget->inactiveScript();
-    scriptWidget->engines.removeAll(engine);
-    if(!scriptWidget->engines.size()){
-        ui->currentlyRunning->removeWidget(scriptWidget);
-        QString scriptName = scriptWidget->scriptName;
-        scriptWidget->deleteLater();
-        _widgets.remove(scriptName);
     }
 }
 
