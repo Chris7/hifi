@@ -105,6 +105,7 @@ Menu::Menu() :
     addActionToQMenuAndActionHash(fileMenu, MenuOption::LoadScript, Qt::CTRL | Qt::Key_O, appInstance, SLOT(loadDialog()));
     addActionToQMenuAndActionHash(fileMenu, MenuOption::StopAllScripts, 0, appInstance, SLOT(stopAllScripts()));
     addActionToQMenuAndActionHash(fileMenu, MenuOption::ReloadAllScripts, 0, appInstance, SLOT(reloadAllScripts()));
+    addActionToQMenuAndActionHash(fileMenu, "Toggle Scripts Dialog", 0, appInstance, SLOT(toggleScriptDialog()));
     _activeScriptsMenu = fileMenu->addMenu("Running Scripts");
 
     addDisabledActionAndSeparator(fileMenu, "Go");
@@ -170,14 +171,14 @@ Menu::Menu() :
                                                 Qt::Key_Return,
                                                 this,
                                                 SLOT(showChat()));
-#ifdef HAVE_QXMPP
-    const QXmppClient& xmppClient = XmppClient::getInstance().getXMPPClient();
-    toggleChat();
-    connect(&xmppClient, SIGNAL(connected()), this, SLOT(toggleChat()));
-    connect(&xmppClient, SIGNAL(disconnected()), this, SLOT(toggleChat()));
-#else
+//#ifdef HAVE_QXMPP
+//    const QXmppClient& xmppClient = XmppClient::getInstance().getXMPPClient();
+//    toggleChat();
+//    connect(&xmppClient, SIGNAL(connected()), this, SLOT(toggleChat()));
+//    connect(&xmppClient, SIGNAL(disconnected()), this, SLOT(toggleChat()));
+//#else
     _chatAction->setEnabled(false);
-#endif
+//#endif
 
     QMenu* viewMenu = addMenu("View");
 

@@ -253,6 +253,7 @@ public slots:
     void initAvatarAndViewFrustum();
     void stopAllScripts();
     void reloadAllScripts();
+    void toggleScriptDialog();
     
     void uploadFST();
 

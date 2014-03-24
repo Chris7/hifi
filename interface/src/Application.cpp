@@ -930,7 +930,7 @@ void Application::keyReleaseEvent(QKeyEvent* event) {
         switch (event->key()) {
             case Qt::Key_J:
                 // toggle the script dialog
-                _scriptOptions->setVisible(!_scriptOptions->isVisible());
+                toggleScriptDialog();
                 break;
             case Qt::Key_E:
                 _myAvatar->setDriveKeys(UP, 0.f);
@@ -3452,6 +3452,10 @@ void Application::stopAllScripts() {
         qDebug() << "stopping script..." << scriptAction->text();
     }
     _activeScripts.clear();
+}
+
+void Application::toggleScriptDialog(){
+    _scriptOptions->setVisible(!_scriptOptions->isVisible());
 }
 
 void Application::reloadAllScripts() {
