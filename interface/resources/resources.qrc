@@ -3,6 +3,6 @@
         <file>images/close.svg</file>
         <file>icons/reload.svg</file>
         <file>icons/stop.svg</file>
-        <file>icons/kill-script.png</file>
+        <file>icons/kill-script.svg</file>
     </qresource>
 </RCC>

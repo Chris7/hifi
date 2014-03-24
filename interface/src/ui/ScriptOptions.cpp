@@ -24,7 +24,7 @@ ScriptWidget::ScriptWidget(QWidget *parent, QString scriptName):
     hlay->setStretch(0, 1);
     hlay->setStretch(1, 0);
     scriptLabel->setStyleSheet("color: dark-grey;");
-    scriptButton->setStyleSheet("image: url(:/images/close.svg) 1 1 1 1;"
+    scriptButton->setStyleSheet("image: url(:/icons/kill-script.svg) 1 1 1 1;"
                              "border-top: 1px transparent;"
                              "border-left: 1px transparent;"
                              "border-right: 1px transparent;"
@@ -91,6 +91,7 @@ ScriptOptions::ScriptOptions(QWidget *parent) :
     ui->headerLayout->setAlignment(ui->runningScriptsLabel, Qt::AlignLeft|Qt::AlignVCenter);
     connect(ui->stopAllButton, SIGNAL(clicked()), this, SLOT(killAll()));
     connect(ui->reloadAllButton, SIGNAL(clicked()), this, SLOT(reloadAll()));
+    connect(ui->scriptOptionsClose, SIGNAL(clicked()), this, SLOT(hide()));
     // set the dimensions equal to our border so it looks nice
 }
 
@@ -162,7 +163,6 @@ void ScriptOptions::keyReleaseEvent(QKeyEvent *event){
 
 void ScriptOptions::runRecent(int scriptIndex)
 {
-    qDebug()<<"running"<<scriptIndex<<_pastScriptsList;
     if(scriptIndex <= _pastScriptsList.size())
         Application::getInstance()->loadScript(_pastScriptsList[scriptIndex-1]->property("Script").toString());
     setFocus();
@@ -183,7 +183,7 @@ void ScriptOptions::addRunningScript(ScriptEngine* engine, QString scriptName)
     script->engines.append(engine);
     script->activeScript();
     _scriptInfo[openID] = script;
-    //add to recent scripts
+    // add to recent scripts
     if(!_pastScripts.contains(scriptName)){
         QPushButton* recentScript = new QPushButton();
         recentScript->setFocusPolicy(Qt::NoFocus);
@@ -191,7 +191,7 @@ void ScriptOptions::addRunningScript(ScriptEngine* engine, QString scriptName)
         recentScript->setProperty("Script", scriptName);
         recentScript->setFlat(true);
         _pastScriptsList.push_front(recentScript);
-        //renumber buttons
+        // renumber buttons
         for(int i=0;i<_pastScriptsList.size();i++){
             if(i==9)
                 break;
