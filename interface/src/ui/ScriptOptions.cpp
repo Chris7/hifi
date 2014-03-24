@@ -7,6 +7,7 @@ ScriptWidget::ScriptWidget(QWidget *parent, QString scriptName):
     QWidget(parent),
     scriptName(scriptName)
 {
+    setMouseTracking(true);
     hlay = new QHBoxLayout();
     scriptButton = new QPushButton();
     scriptLabel = new QLabel();
@@ -64,6 +65,7 @@ void ScriptWidget::buttonClicked()
     }
     else
         engine->stop();
+    setFocus();
 }
 
 void ScriptWidget::activeScript()
@@ -82,12 +84,14 @@ ScriptOptions::ScriptOptions(QWidget *parent) :
     ui(new Ui::ScriptOptions)
 {
     ui->setupUi(this);
+    setMouseTracking(true);
     QPixmap pix(":/images/close.svg");
     ui->scriptOptionsClose->setFixedSize(pix.rect().size());
     ui->headerLayout->setAlignment(ui->scriptOptionsClose, Qt::AlignRight|Qt::AlignVCenter);
     ui->headerLayout->setAlignment(ui->runningScriptsLabel, Qt::AlignLeft|Qt::AlignVCenter);
     connect(ui->stopAllButton, SIGNAL(clicked()), this, SLOT(killAll()));
     connect(ui->reloadAllButton, SIGNAL(clicked()), this, SLOT(reloadAll()));
+    // set the dimensions equal to our border so it looks nice
 }
 
 ScriptOptions::~ScriptOptions()
@@ -161,6 +165,7 @@ void ScriptOptions::runRecent(int scriptIndex)
     qDebug()<<"running"<<scriptIndex<<_pastScriptsList;
     if(scriptIndex <= _pastScriptsList.size())
         Application::getInstance()->loadScript(_pastScriptsList[scriptIndex-1]->property("Script").toString());
+    setFocus();
 }
 
 void ScriptOptions::addRunningScript(ScriptEngine* engine, QString scriptName)
@@ -173,7 +178,6 @@ void ScriptOptions::addRunningScript(ScriptEngine* engine, QString scriptName)
     else{
         script = new ScriptWidget(this, scriptName);
         _widgets[scriptName] = script;
-        qDebug()<<scriptName<<"added";
         ui->currentlyRunning->addWidget(script, 1, Qt::AlignLeft);
     }
     script->engines.append(engine);
