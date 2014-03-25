@@ -81,7 +81,7 @@ void ScriptWidget::inactiveScript()
 
 
 ScriptOptions::ScriptOptions(QWidget *parent) :
-    QWidget(Application::getInstance()->getGLWidget(), Qt::Tool ),
+    QWidget(parent),
     ui(new Ui::ScriptOptions)
 {
     ui->setupUi(this);
