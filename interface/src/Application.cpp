@@ -370,6 +370,9 @@ Application::~Application() {
     storeSizeAndPosition();
     saveScripts();
 
+    // kill script options
+    delete _scriptOptions;
+
     VoxelTreeElement::removeDeleteHook(&_voxels); // we don't need to do this processing on shutdown
     Menu::getInstance()->deleteLater();
 

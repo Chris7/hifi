@@ -2,6 +2,7 @@
 #include "ui_scriptOptions.h"
 #include <QDebug>
 #include "Application.h"
+#include "Menu.h"
 
 ScriptWidget::ScriptWidget(QWidget *parent, QString scriptName):
     QWidget(parent),
@@ -89,8 +90,14 @@ ScriptOptions::ScriptOptions(QWidget *parent) :
     setStyleSheet("QLabel {"
                   "font: Helvetica, Arial, 'Dejavu Sans';"
                   "}");
-    setAttribute(Qt::WA_DeleteOnClose);
-    setWindowTitle("Script Manager");
+    setWindowFlags(windowFlags() | Qt::FramelessWindowHint | Qt::WindowStaysOnTopHint);
+    // set localization to upper left of Application
+    int x = Application::getInstance()->getGLWidget()->geometry().x();
+    int y = Application::getInstance()->getGLWidget()->geometry().y();
+    // Height seems to be about half where it needs to be. Probably
+    // due to Menu not being drawn at time this is called. FIXME
+    y += Menu::getInstance()->geometry().height()*2;
+    move(x,y);
     QPixmap pix(":/images/close.svg");
     ui->scriptOptionsClose->setFixedSize(pix.rect().size());
     ui->headerLayout->setAlignment(ui->scriptOptionsClose, Qt::AlignRight|Qt::AlignVCenter);
