@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QHBoxLayout>
 #include <QKeyEvent>
+#include <QLayout>
 
 #include "ScriptEngine.h"
 
@@ -51,12 +52,16 @@ public:
     void addRunningScript(ScriptEngine* engine, QString scriptName);
     void runRecent(int scriptIndex);
     void keyReleaseEvent(QKeyEvent*);
+    bool firstScriptLoaded = false;
+
+    QLabel* scriptHint;
 
 public slots:
     void scriptFinished(const QString&);
     void recentScriptClicked();
     void killAll();
     void reloadAll();
+    void labelLinkClicked(QString);
 
 private:
     Ui::ScriptOptions *ui;

@@ -18,12 +18,13 @@ ScriptWidget::ScriptWidget(QWidget *parent, QString scriptName):
     vlay->addLayout(hlay, 1);
     QFrame* sep = new QFrame();
     sep->setFrameShape(QFrame::HLine);
-    sep->setFrameShadow(QFrame::Sunken);
+    sep->setStyleSheet("color: rgb(226, 226, 226);");
     vlay->addWidget(sep, 0, Qt::AlignTop);
     connect(scriptButton, SIGNAL(clicked()), this, SLOT(buttonClicked()));
     hlay->setStretch(0, 1);
     hlay->setStretch(1, 0);
-    scriptLabel->setStyleSheet("color: dark-grey;");
+    scriptLabel->setStyleSheet("font: Helvetica, Arial, 'Dejavu Sans';"
+                               "color: dark-grey;");
     scriptButton->setStyleSheet("image: url(:/icons/kill-script.svg) 1 1 1 1;"
                              "border-top: 1px transparent;"
                              "border-left: 1px transparent;"
@@ -80,11 +81,16 @@ void ScriptWidget::inactiveScript()
 
 
 ScriptOptions::ScriptOptions(QWidget *parent) :
-    QWidget(parent),
+    QWidget(Application::getInstance()->getGLWidget(), Qt::Tool ),
     ui(new Ui::ScriptOptions)
 {
     ui->setupUi(this);
-    setMouseTracking(true);
+    //setMouseTracking(true);
+    setStyleSheet("QLabel {"
+                  "font: Helvetica, Arial, 'Dejavu Sans';"
+                  "}");
+    setAttribute(Qt::WA_DeleteOnClose);
+    setWindowTitle("Script Manager");
     QPixmap pix(":/images/close.svg");
     ui->scriptOptionsClose->setFixedSize(pix.rect().size());
     ui->headerLayout->setAlignment(ui->scriptOptionsClose, Qt::AlignRight|Qt::AlignVCenter);
@@ -92,7 +98,21 @@ ScriptOptions::ScriptOptions(QWidget *parent) :
     connect(ui->stopAllButton, SIGNAL(clicked()), this, SLOT(killAll()));
     connect(ui->reloadAllButton, SIGNAL(clicked()), this, SLOT(reloadAll()));
     connect(ui->scriptOptionsClose, SIGNAL(clicked()), this, SLOT(hide()));
-    // set the dimensions equal to our border so it looks nice
+    // hide the recently loaded since it will not be populated at this point
+    ui->recentScriptsWidget->hide();
+    // have a hint to load scripts
+    ui->scriptHint->setText("<font style='text-align:center;' color='#666666'>Scripts you are running will show up here.</font><br><a href='#launch_script'>Why not launch one?</a>");
+    ui->scriptHint->setProperty("openExternalLinks", false);
+    connect(ui->scriptHint, SIGNAL(linkActivated(QString)), this, SLOT(labelLinkClicked(QString)));
+    ui->scriptHint->setStyleSheet("color: #666666;");
+    ui->stackedWidget->setCurrentIndex(1);
+}
+
+void ScriptOptions::labelLinkClicked(QString link)
+{
+    if(link == "#launch_script"){
+        Application::getInstance()->loadDialog();
+    }
 }
 
 ScriptOptions::~ScriptOptions()
@@ -199,6 +219,12 @@ void ScriptOptions::addRunningScript(ScriptEngine* engine, QString scriptName)
             _pastScriptsList[i]->setText(QString::number(i+1)+". "+name);
         }
         ui->recentScripts->insertWidget(0, recentScript, 1, Qt::AlignLeft);
+        if(_pastScriptsList.size() < 9){
+            QFrame* sep = new QFrame();
+            sep->setFrameShape(QFrame::HLine);
+            sep->setStyleSheet("color: rgb(226, 226, 226);");
+            ui->recentScripts->insertWidget(1, sep, 0);
+        }
         _pastScripts[scriptName] = recentScript;
         // obliterate scripts beyond 9
         while(_pastScriptsList.size() > 9){
@@ -209,11 +235,18 @@ void ScriptOptions::addRunningScript(ScriptEngine* engine, QString scriptName)
             button->deleteLater();
         }
     }
+    if(!firstScriptLoaded){
+        // first load of a script
+        ui->recentScriptsWidget->show();
+        firstScriptLoaded = true;
+    }
+    // remove the script hint, show control buttons
+    ui->stackedWidget->setCurrentIndex(0);
+
 }
 
 void ScriptOptions::scriptFinished(const QString& scriptFileName)
 {
-    qDebug()<<scriptFileName<<"send finished"<<_widgets.contains(scriptFileName);
     if(_widgets.contains(scriptFileName)){
         ScriptWidget* scriptWidget = _widgets[scriptFileName];
         scriptWidget->cleanupEngines();
@@ -222,6 +255,10 @@ void ScriptOptions::scriptFinished(const QString& scriptFileName)
             scriptWidget->deleteLater();
             _widgets.remove(scriptFileName);
         }
+    }
+    if(_widgets.size() == 0){
+        // no active scripts, hide controls and show script hint
+        ui->stackedWidget->setCurrentIndex(1);
     }
 }
 

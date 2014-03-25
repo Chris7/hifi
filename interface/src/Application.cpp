@@ -327,7 +327,7 @@ Application::Application(int& argc, char** argv, timeval &startup_time) :
     LocalVoxelsList::getInstance()->addPersistantTree(CLIPBOARD_TREE_NAME, &_clipboard);
     
     // populate the script options screen here to catch what scripts are going to be loading and record them
-    _scriptOptions = new ScriptOptions(_glWidget);
+    _scriptOptions = new ScriptOptions();
 
     // do this as late as possible so that all required subsystems are inialized
     loadScripts();
@@ -485,6 +485,7 @@ void Application::initializeGL() {
 }
 
 void Application::paintGL() {
+    return;
     PerformanceWarning::setSuppressShortTimings(Menu::getInstance()->isOptionChecked(MenuOption::SuppressShortTimings));
     bool showWarnings = Menu::getInstance()->isOptionChecked(MenuOption::PipelineWarnings);
     PerformanceWarning warn(showWarnings, "Application::paintGL()");
