@@ -62,6 +62,7 @@ public slots:
     void killAll();
     void reloadAll();
     void labelLinkClicked(QString);
+    void hideMe();
 
 private:
     Ui::ScriptOptions *ui;

@@ -484,6 +484,7 @@ private:
     TouchEvent _lastTouchEvent;
     
     Overlays _overlays;
+    QDockWidget* _scriptOptionsWindow;
     ScriptOptions* _scriptOptions;
 };
 

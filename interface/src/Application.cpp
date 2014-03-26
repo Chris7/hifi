@@ -327,7 +327,13 @@ Application::Application(int& argc, char** argv, timeval &startup_time) :
     LocalVoxelsList::getInstance()->addPersistantTree(CLIPBOARD_TREE_NAME, &_clipboard);
     
     // populate the script options screen here to catch what scripts are going to be loading and record them
-    _scriptOptions = new ScriptOptions();
+    _scriptOptionsWindow = new QDockWidget(_glWidget);
+    _scriptOptions = new ScriptOptions(_scriptOptionsWindow);
+    _scriptOptionsWindow->setWidget(_scriptOptions);
+    _scriptOptionsWindow->setWindowFlags(_scriptOptionsWindow->windowFlags() | Qt::FramelessWindowHint);
+    _scriptOptionsWindow->setFeatures(QDockWidget::NoDockWidgetFeatures);
+    QWidget* titleWidget = new QWidget();
+    _scriptOptionsWindow->setTitleBarWidget(titleWidget);
 
     // do this as late as possible so that all required subsystems are inialized
     loadScripts();
@@ -3458,7 +3464,7 @@ void Application::stopAllScripts() {
 }
 
 void Application::toggleScriptDialog(){
-    _scriptOptions->setVisible(!_scriptOptions->isVisible());
+    _scriptOptionsWindow->setVisible(!_scriptOptionsWindow->isVisible());
 }
 
 void Application::reloadAllScripts() {

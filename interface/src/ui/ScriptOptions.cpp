@@ -104,7 +104,7 @@ ScriptOptions::ScriptOptions(QWidget *parent) :
     ui->headerLayout->setAlignment(ui->runningScriptsLabel, Qt::AlignLeft|Qt::AlignVCenter);
     connect(ui->stopAllButton, SIGNAL(clicked()), this, SLOT(killAll()));
     connect(ui->reloadAllButton, SIGNAL(clicked()), this, SLOT(reloadAll()));
-    connect(ui->scriptOptionsClose, SIGNAL(clicked()), this, SLOT(hide()));
+    connect(ui->scriptOptionsClose, SIGNAL(clicked()), this, SLOT(hideMe()));
     // hide the recently loaded since it will not be populated at this point
     ui->recentScriptsWidget->hide();
     // have a hint to load scripts
@@ -120,6 +120,11 @@ void ScriptOptions::labelLinkClicked(QString link)
     if(link == "#launch_script"){
         Application::getInstance()->loadDialog();
     }
+}
+
+void ScriptOptions::hideMe()
+{
+    parentWidget()->setVisible(false);
 }
 
 ScriptOptions::~ScriptOptions()
